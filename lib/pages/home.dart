@@ -27,6 +27,10 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.sizeOf(context).height * 0.05,
               ),
               _ProfileHeader(),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.02,
+              ),
+              _Steps()
             ]));
   }
 
@@ -38,7 +42,6 @@ class _HomeState extends State<Home> {
       child: Column(
         children: [
           Row(
-            
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
@@ -53,24 +56,65 @@ class _HomeState extends State<Home> {
                   // Handle icon tap
                 },
               ),
-               ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-              child:Container(
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
                   color: Colors.grey[900],
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child:Text(
-                "Time   02:47:12",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
+                  child: Text(
+                    "Time   02:47:12",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
                       letterSpacing: 1.0,
                     ),
+                  ),
+                ),
               ),
-              ),
-               ),
             ],
           )
         ],
       ),
     );
+  }
+
+  Widget _Steps() {
+    return
+    Container(
+     padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+     child:Column(
+      
+      children: [
+        Row(
+         children: [
+           Text(
+              "Steps",
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 2.0,
+              ),
+            ),
+         ],
+        ),
+        SizedBox(height: 10),
+        Row(
+         
+         children: [
+          Text(
+            "9,257",
+             style: const TextStyle(
+                  fontSize: 55,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 2.0,
+                ),
+          )
+         ],
+
+        ),
+      ],
+     ),
+    );
+    
   }
 }
