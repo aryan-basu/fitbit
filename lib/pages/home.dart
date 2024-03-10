@@ -11,18 +11,36 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildUI(),
+      body: Stack(
+        children: [
+          _buildUI(),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+              backgroundColor: Colors.pinkAccent,
+              onPressed: () {
+                // Add onPressed action for the play button
+              },
+              child: Icon(Icons.play_arrow),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildUI() {
     return SizedBox(
+      
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
+        
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.05,
               ),
@@ -43,6 +61,7 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
               _streakdata(),
+              
             ]));
   }
 
@@ -245,8 +264,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
-  Widget _graphdata() {
+Widget _graphdata() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -255,27 +273,50 @@ class _HomeState extends State<Home> {
             0.90, // Adjust the width as needed
         height: MediaQuery.sizeOf(context).height * 0.22,
         padding: EdgeInsets.all(20.0),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Align children vertically centered
           children: [
-            Row(
+            Column(
+              
               children: [
+        
                 Text(
                   "Week's Activity",
+                  textAlign: TextAlign.end,
                   style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2.0),
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2.0,
+                  ),
                 ),
               ],
             ),
+            Column(
+                  mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.bar_chart_outlined,
+                    size: 38, // Adjust the size of the icon
+                    color: Colors.pinkAccent, // Set the color of the icon
+                    semanticLabel:
+                        'Account', // Add a semantic label for accessibility
+                  ), // Add the icon here
+                  onPressed: () {
+                    // Handle icon tap
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
     );
   }
+
 
   Widget _streakdata() {
     return ClipRRect(
