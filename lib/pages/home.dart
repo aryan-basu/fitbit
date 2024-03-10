@@ -288,6 +288,7 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -314,6 +315,30 @@ class _HomeState extends State<Home> {
                 
                 ],
             ),
+           Container(
+            child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Streak",
+                    style: TextStyle(
+                      fontSize: 16, // Set font size for the first row
+                      fontWeight:
+                          FontWeight.normal, // Optional: Set font weight
+                      // Add any other style properties as needed
+                    ),
+                  ),
+                  Text(
+                    "24 🔥",
+                    style: TextStyle(
+                      fontSize: 20, // Set font size for the second row
+                      fontWeight: FontWeight.bold, // Optional: Set font weight
+                      // Add any other style properties as needed
+                    ),
+                  ),
+                ],
+              ),
+           )
           
            
           ],
