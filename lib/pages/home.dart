@@ -133,8 +133,56 @@ class _HomeState extends State<Home> {
     color: Colors.pinkAccent,
         width: MediaQuery.sizeOf(context).width * 0.90,  // Adjust the width as needed
         height: MediaQuery.sizeOf(context).height*0.20,
-    
-    
+              padding: EdgeInsets.all(20.0),
+     child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+         children: [
+         
+          Text("You walked 72 min",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 2.0
+          ),
+          )
+         ],
+        ),
+        Container(
+        child:Column(
+           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+           children: [
+            Row(
+              children:[
+                Text(
+                  "Distance",
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2.0),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+             Row(
+                    children: [
+                      Text(
+                        "4478m",
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2.0),
+                      ),
+                    ],
+                  ),
+           
+          
+              ],
+        ),
+        ),
+      ],
+     ),
     ),
   
     );
