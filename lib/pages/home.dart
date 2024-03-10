@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
               _graphdata(),
-                SizedBox(
+              SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
               _streakdata(),
@@ -126,141 +126,158 @@ class _HomeState extends State<Home> {
   }
 
   Widget _dailydata() {
-    return 
-    ClipRRect(
-   borderRadius: BorderRadius.circular(20),
-   child: Container(
-    color: Colors.pinkAccent,
-        width: MediaQuery.sizeOf(context).width * 0.90,  // Adjust the width as needed
-        height: MediaQuery.sizeOf(context).height*0.20,
-              padding: EdgeInsets.all(20.0),
-     child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-         children: [
-         
-          Text("You walked 72 min",
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 2.0
-          ),
-          )
-         ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        color: Colors.pinkAccent,
+        width: MediaQuery.sizeOf(context).width *
+            0.90, // Adjust the width as needed
+        height: MediaQuery.sizeOf(context).height * 0.20,
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "You walked 72 min",
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2.0),
+                )
+              ],
+            ),
+            Container(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Distance",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Calories",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          "Points",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 2.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: Text(
+                            "4467 m",
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: Text(
+                            "457",
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            "987",
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-     Container(
-  child: Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-            child: Text(
-              "Distance",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              "Calories",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              "Points",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-        ],
       ),
-      SizedBox(height: 5),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-           child: Padding(
-    padding: const EdgeInsets.only(left: 5.0),
-            child: Text(
-              "4467 m",
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-              ),
-            ),
-            ),
-          ),
-          Expanded(
-                     child: Padding(
-    padding: const EdgeInsets.only(left: 5.0),
-            child: Text(
-              "457",
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-          ),
-          Expanded(
-                     child: Padding(
-    padding: const EdgeInsets.only(left: 15.0),
-            child: Text(
-              "987",
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-          ),
-        ],
-      ),
-    ],
-  ),
-),
-
-      ],
-     ),
-    ),
-  
     );
   }
 
-  Widget _graphdata(){
-      return ClipRRect(
+  Widget _graphdata() {
+    return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
         color: Colors.white,
         width: MediaQuery.sizeOf(context).width *
             0.90, // Adjust the width as needed
         height: MediaQuery.sizeOf(context).height * 0.22,
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Week's Activity",
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2.0),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-    Widget _streakdata() {
+
+  Widget _streakdata() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
