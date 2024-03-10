@@ -8,6 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+    bool isPlaying = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +21,12 @@ class _HomeState extends State<Home> {
             child: FloatingActionButton(
               backgroundColor: Colors.pinkAccent,
               onPressed: () {
+                  setState(() {
+                  isPlaying = !isPlaying;
+                });
                 // Add onPressed action for the play button
               },
-              child: Icon(Icons.play_arrow),
+                 child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
             ),
           ),
         ],
