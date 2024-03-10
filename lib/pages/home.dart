@@ -190,7 +190,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      SizedBox(height: 10),
+      SizedBox(height: 5),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -202,7 +202,7 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.left,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
               ),
             ),
@@ -216,7 +216,7 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.left,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
               ),
             ),
@@ -224,13 +224,13 @@ class _HomeState extends State<Home> {
           ),
           Expanded(
                      child: Padding(
-    padding: const EdgeInsets.only(left: 5.0),
+    padding: const EdgeInsets.only(left: 15.0),
             child: Text(
               "987",
               textAlign: TextAlign.left,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
               ),
             ),
