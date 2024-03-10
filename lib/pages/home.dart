@@ -285,6 +285,39 @@ class _HomeState extends State<Home> {
         width: MediaQuery.sizeOf(context).width *
             0.90, // Adjust the width as needed
         height: MediaQuery.sizeOf(context).height * 0.19,
+          padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 
+                children: [
+                
+                Text(
+                  "Yesterday's Calories",
+                  style: const TextStyle(
+                  
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2.0),
+                ),
+              
+                   
+                   Text(
+                    "400",
+                    style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0),
+                  ),
+                
+                ],
+            ),
+          
+           
+          ],
+        ),
       ),
     );
   }
