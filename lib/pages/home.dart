@@ -30,7 +30,19 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
-              _Steps()
+              _Steps(),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.05,
+              ),
+              _dailydata(),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.02,
+              ),
+              _graphdata(),
+                SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.02,
+              ),
+              _streakdata(),
             ]));
   }
 
@@ -79,42 +91,75 @@ class _HomeState extends State<Home> {
   }
 
   Widget _Steps() {
-    return
-    Container(
-     padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-     child:Column(
-      
-      children: [
-        Row(
-         children: [
-           Text(
-              "Steps",
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 2.0,
+    return Container(
+      padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                "Steps",
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 2.0,
+                ),
               ),
-            ),
-         ],
-        ),
-        SizedBox(height: 10),
-        Row(
-         
-         children: [
-          Text(
-            "9,257",
-             style: const TextStyle(
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                "9,257",
+                style: const TextStyle(
                   fontSize: 55,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 2.0,
                 ),
-          )
-         ],
-
-        ),
-      ],
-     ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
+  }
+
+  Widget _dailydata() {
+    return 
+    ClipRRect(
+   borderRadius: BorderRadius.circular(20),
+   child: Container(
+    color: Colors.pinkAccent,
+        width: MediaQuery.sizeOf(context).width * 0.90,  // Adjust the width as needed
+        height: MediaQuery.sizeOf(context).height*0.20,
     
+    
+    ),
+  
+    );
+  }
+
+  Widget _graphdata(){
+      return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        color: Colors.white,
+        width: MediaQuery.sizeOf(context).width *
+            0.90, // Adjust the width as needed
+        height: MediaQuery.sizeOf(context).height * 0.22,
+      ),
+    );
+  }
+    Widget _streakdata() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        color: Colors.grey[900],
+        width: MediaQuery.sizeOf(context).width *
+            0.90, // Adjust the width as needed
+        height: MediaQuery.sizeOf(context).height * 0.19,
+      ),
+    );
   }
 }
