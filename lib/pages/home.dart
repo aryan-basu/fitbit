@@ -149,38 +149,99 @@ class _HomeState extends State<Home> {
           )
          ],
         ),
-        Container(
-        child:Column(
-           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-           children: [
-            Row(
-              children:[
-                Text(
-                  "Distance",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2.0),
-                ),
-              ],
+     Container(
+  child: Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: Text(
+              "Distance",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
             ),
-            SizedBox(height: 10),
-             Row(
-                    children: [
-                      Text(
-                        "4478m",
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 2.0),
-                      ),
-                    ],
-                  ),
-           
-          
-              ],
-        ),
-        ),
+          ),
+          Expanded(
+            child: Text(
+              "Calories",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              "Points",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 10),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+           child: Padding(
+    padding: const EdgeInsets.only(left: 5.0),
+            child: Text(
+              "4467 m",
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
+            ),
+            ),
+          ),
+          Expanded(
+                     child: Padding(
+    padding: const EdgeInsets.only(left: 5.0),
+            child: Text(
+              "457",
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
+            ),
+          ),
+          ),
+          Expanded(
+                     child: Padding(
+    padding: const EdgeInsets.only(left: 5.0),
+            child: Text(
+              "987",
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 2.0,
+              ),
+            ),
+          ),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
+
       ],
      ),
     ),
