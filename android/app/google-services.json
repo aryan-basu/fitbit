@@ -41,6 +41,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146749049686:android:42346ed21b649505a9e4f7",
+        "android_client_info": {
+          "package_name": "com.example.fitbit.storage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146749049686-rhqh41i82r4ee4pe341t6uvdnijfmbd2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitbit.storage",
+            "certificate_hash": "64e7b5fcf306f074b4a0f40b44c85474a0e522a8"
+          }
+        },
+        {
+          "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs8ZBomuxpHXUCxRrHhu0AwHzjHwafaX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
