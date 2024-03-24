@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitbit/pages/home.dart';
+import 'package:fitbit/pages/Login.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fitbit',
-       theme: ThemeData(
+      theme: ThemeData(
         // Set black as the primary color
         primaryColor: Colors.black,
         // Set black as the accent color
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
               displayColor: Colors.white, // Set white as the display text color
             ),
       ),
-      home: Home(),
+      home: Login(),
     );
   }
 }
