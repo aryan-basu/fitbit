@@ -41,7 +41,6 @@ class _HealthDataPageState extends State<HealthDataPage> {
           // Define the types of health data you want to fetch
           List<HealthDataType> types = [
             HealthDataType.STEPS,
-            HealthDataType.BLOOD_GLUCOSE,
           ];
           int? steps;
 
@@ -92,12 +91,25 @@ class _HealthDataPageState extends State<HealthDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[350],
-      body: Center(
-        child: Text(
-          'Total step    {$_getSteps}',
-          style: const TextStyle(fontSize: 40),
+     body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _fetchHealthData();
+                // Add your data fetching logic here
+                // For example, you can use a FutureBuilder or a package like http
+              },
+              child: Text('Fetch Data'),
+            ),
+            SizedBox(height: 20),
+            // Widget to display fetched data
+            // This can be a Text widget or any other widget based on your data format
+          ],
         ),
       ),
+
     );
   }
 }

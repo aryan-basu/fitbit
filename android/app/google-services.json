@@ -1,78 +1,33 @@
 {
   "project_info": {
-    "project_number": "146749049686",
-    "project_id": "fitbit-589df",
-    "storage_bucket": "fitbit-589df.appspot.com"
+    "project_number": "253602706322",
+    "project_id": "fitnessbit",
+    "storage_bucket": "fitnessbit.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:146749049686:android:3c27d6a1d1981d9ca9e4f7",
+        "mobilesdk_app_id": "1:253602706322:android:5da810bf88ac93df87074b",
         "android_client_info": {
-          "package_name": "com.example.fitbit"
+          "package_name": "com.example.fitnessbit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "146749049686-ag9rndgjb04o6ft1eg78cmdmvg8cfhk6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.fitbit",
-            "certificate_hash": "64e7b5fcf306f074b4a0f40b44c85474a0e522a8"
-          }
-        },
-        {
-          "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
+          "client_id": "253602706322-ebqhihrdp9hfdp7f545ijlthaobtjju2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCs8ZBomuxpHXUCxRrHhu0AwHzjHwafaX4"
+          "current_key": "AIzaSyCStrlmKAQRfDGg3Jj1MWbFGu7b1SLIGoE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:146749049686:android:42346ed21b649505a9e4f7",
-        "android_client_info": {
-          "package_name": "com.example.fitbit.storage"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "146749049686-rhqh41i82r4ee4pe341t6uvdnijfmbd2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.fitbit.storage",
-            "certificate_hash": "64e7b5fcf306f074b4a0f40b44c85474a0e522a8"
-          }
-        },
-        {
-          "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCs8ZBomuxpHXUCxRrHhu0AwHzjHwafaX4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "146749049686-1qcc1rna0ukfbd88vpeppdvhltllfllm.apps.googleusercontent.com",
+              "client_id": "253602706322-ebqhihrdp9hfdp7f545ijlthaobtjju2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
