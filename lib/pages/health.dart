@@ -11,10 +11,10 @@ class HealthDataPage extends StatefulWidget {
 class _HealthDataPageState extends State<HealthDataPage> {
   List<HealthDataPoint> _healthDataList = [];
   int _getSteps = 0;
-  int _distance = 0;
 
-  HealthFactory Health = HealthFactory();
+  HealthFactory health = HealthFactory();
   final activityRecognition = FlutterActivityRecognition.instance;
+
   @override
   void initState() {
     super.initState();
@@ -22,94 +22,72 @@ class _HealthDataPageState extends State<HealthDataPage> {
   }
 
   Future<void> _fetchHealthData() async {
-    var types = [
-      HealthDataType.STEPS,
-    ];
-    // Define the start and end dates for the data you want to fetch
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day);
-    var permissions = [
-      HealthDataAccess.READ,
-    ];
+    // Check if permission is granted
+    if (await _isPermissionGranted()) {
+      // Define the types of health data you want to fetch
+      var types = [HealthDataType.STEPS];
 
-    bool requested =
-        await Health.requestAuthorization(types, permissions: permissions);
+      // Define the start and end dates for the data you want to fetch
+      final now = DateTime.now();
+      final midnight = DateTime(now.year, now.month, now.day);
 
-    if (requested) {
-      if (isPermissionGrants()==true) {
-        try {
-          // Define the types of health data you want to fetch
-          List<HealthDataType> types = [
-            HealthDataType.STEPS,
-          ];
-          int? steps;
+      try {
+        // Fetch health data
+        List<HealthDataPoint> healthData =
+            await health.getHealthDataFromTypes(midnight, now, types);
 
-          // Fetch health data
-          List<HealthDataPoint> healthData =
-              await Health.getHealthDataFromTypes(midnight, now, types);
+        setState(() {
+          _healthDataList = healthData;
+        });
 
-          setState(() {
-            _healthDataList = healthData;
-          });
-          steps = await Health.getTotalStepsInInterval(midnight, now);
-          print('Total number of steps: $steps');
+        int? steps = await health.getTotalStepsInInterval(midnight, now);
+        print('Total number of steps: $steps');
 
-          setState(() {
-            _getSteps = (steps == null) ? 0 : steps;
-          });
-          // setState(() {
-          //   _healthDataList = healthData;
-          // });
-        } catch (e) {
-          print('Error fetching health data: $e');
-        }
-      } else {
-        print("Authorization not granted - error in authorization");
+        setState(() {
+          _getSteps = steps ?? 0;
+        });
+      } catch (e) {
+        print('Error fetching health data: $e');
       }
+    } else {
+      print('Permission not granted');
     }
   }
 
-  Future<bool> isPermissionGrants() async {
-    // Check if the user has granted permission. If not, request permission.
-    PermissionRequestResult reqResult;
-    reqResult = await activityRecognition.checkPermission();
-    if (reqResult == PermissionRequestResult.PERMANENTLY_DENIED) {
-      print('Permission is permanently denied.');
-      return false;
-    } else if (reqResult == PermissionRequestResult.DENIED) {
-      reqResult = await activityRecognition.requestPermission();
-      if (reqResult != PermissionRequestResult.GRANTED) {
-        print('Permission is denied.');
-        return false;
-      }
-    }
+  Future<bool> _isPermissionGranted() async {
+    // Check if the user has granted permission
+    PermissionRequestResult reqResult =
+        await activityRecognition.checkPermission();
 
-    return true;
+    if (reqResult == PermissionRequestResult.GRANTED) {
+      return true;
+    } else {
+      // Request permission if not granted
+      reqResult = await activityRecognition.requestPermission();
+      return reqResult == PermissionRequestResult.GRANTED;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[350],
-     body: Center(
+      appBar: AppBar(
+        title: Text('Health Data'),
+      ),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                _fetchHealthData();
-                // Add your data fetching logic here
-                // For example, you can use a FutureBuilder or a package like http
-              },
+              onPressed: _fetchHealthData,
               child: Text('Fetch Data'),
             ),
             SizedBox(height: 20),
-            // Widget to display fetched data
-            // This can be a Text widget or any other widget based on your data format
+            Text('Total Steps: $_getSteps'),
+            // Display other health data as needed
           ],
         ),
       ),
-
     );
   }
 }

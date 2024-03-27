@@ -46,38 +46,18 @@ class Login extends StatelessWidget {
         context,
         MaterialPageRoute(builder: (context) => HealthDataPage()),
       );
-      print('accnt us $GoogleSignInAuthentication');
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Sign in with the provided credential
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Access the current user's email
+      print('User email: ${userCredential.user?.email}');
+
+      return userCredential;
     } on Exception catch (e) {
-      // TODO
-      print('exception->$e');
-    }
-  }
-
-  Future<dynamic> _signInWithGoogle(BuildContext context) async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-
-      if (GoogleSignInAuthentication != null) {
-        print('accnt us $GoogleSignInAuthentication');
-        // Successfully signed in, navigate to the home page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HealthDataPage()),
-        );
-      }
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on Exception catch (e) {
-      // TODO
-      print('exception->$e');
+      // Handle sign-in errors
+      print('Sign-in error: $e');
     }
   }
 }
