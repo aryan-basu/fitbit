@@ -25,16 +25,23 @@ class _HealthDataPageState extends State<HealthDataPage> {
     // Check if permission is granted
     if (await _isPermissionGranted()) {
       // Define the types of health data you want to fetch
-      var types = [HealthDataType.STEPS];
+      var types = [
+        HealthDataType.STEPS,
+        HealthDataType.WEIGHT,
+        HealthDataType.ACTIVE_ENERGY_BURNED,
+        HealthDataType.HEIGHT
+
+      ];
 
       // Define the start and end dates for the data you want to fetch
       final now = DateTime.now();
       final midnight = DateTime(now.year, now.month, now.day);
-
+ 
       try {
         // Fetch health data
+         bool requested = await health.requestAuthorization(types);
         List<HealthDataPoint> healthData =
-            await health.getHealthDataFromTypes(midnight, now, types);
+            await health.getHealthDataFromTypes(midnight, now,types);
 
         setState(() {
           _healthDataList = healthData;
@@ -42,6 +49,7 @@ class _HealthDataPageState extends State<HealthDataPage> {
 
         int? steps = await health.getTotalStepsInInterval(midnight, now);
         print('Total number of steps: $steps');
+        print('health is $healthData');
 
         setState(() {
           _getSteps = steps ?? 0;
