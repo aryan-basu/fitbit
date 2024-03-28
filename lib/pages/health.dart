@@ -29,8 +29,8 @@ class _HealthDataPageState extends State<HealthDataPage> {
         HealthDataType.STEPS,
         HealthDataType.WEIGHT,
         HealthDataType.ACTIVE_ENERGY_BURNED,
-        HealthDataType.HEIGHT
-
+        HealthDataType.HEIGHT,
+  HealthDataType.DISTANCE_DELTA,
       ];
 
       // Define the start and end dates for the data you want to fetch
