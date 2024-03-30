@@ -12,7 +12,11 @@ class HealthDataPage extends StatefulWidget {
 
 class _HealthDataPageState extends State<HealthDataPage> {
   List<HealthDataPoint> _healthDataList = [];
+  List<HealthDataPoint> _DistanceDataList = [];
   int _getSteps = 0;
+  double distance = 0.0;
+  double totalActiveEnergyBurned = 0.0;
+  double weight = 0.0;
 
   HealthFactory health = HealthFactory();
   final activityRecognition = FlutterActivityRecognition.instance;
@@ -33,7 +37,9 @@ class _HealthDataPageState extends State<HealthDataPage> {
         HealthDataType.ACTIVE_ENERGY_BURNED,
         HealthDataType.HEIGHT,
         HealthDataType.DISTANCE_DELTA,
-        HealthDataType.WORKOUT
+        HealthDataType.WORKOUT,
+         HealthDataType.MOVE_MINUTES,
+          HealthDataType.BODY_MASS_INDEX,
       ];
 
       // Define the start and end dates for the data you want to fetch
@@ -43,11 +49,47 @@ class _HealthDataPageState extends State<HealthDataPage> {
 
       final midnight = DateTime(now.year, now.month, now.day);
 
-      print('timre of midnight is $midnight and day is $now');
+      print('time of midnight is $midnight and day is $now');
 
+
+    
+      try {
+        bool requested = await health.requestAuthorization(types);
+         List<HealthDataPoint> RandomData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+              HealthDataType.BODY_MASS_INDEX,
+          ],
+        );
+        List<HealthDataPoint> DistanceData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.DISTANCE_DELTA,
+          ],
+        );
+
+        DistanceData.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+            distance += double.parse(dataPoint.value.toString());
+          }
+        });
+
+        print('Total distance is $distance');
+           print('Total workout $RandomData');
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
+
+//for fetching calorie data
       try {
         // Fetch health data
         bool requested = await health.requestAuthorization(types);
+
         List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
           midnight,
           now,
@@ -62,12 +104,11 @@ class _HealthDataPageState extends State<HealthDataPage> {
 
         _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
         _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
-        double totalActiveEnergyBurned = 0.0;
+
         // print the results
         _healthDataList.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
-       
             totalActiveEnergyBurned += double.parse(dataPoint.value.toString());
           }
         });
