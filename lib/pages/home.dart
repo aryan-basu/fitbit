@@ -13,9 +13,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isPlaying = false;
   int Steps = 0;
-  double distance = 0.0;
-  double totalActiveEnergyBurned = 0.0;
-  double weight = 0.0;
+  int distance = 0;
+  int totalActiveEnergyBurned = 0;
+  int weight = 0;
   HealthFactory health = HealthFactory();
   final activityRecognition = FlutterActivityRecognition.instance;
   @override
@@ -40,22 +40,25 @@ class _HomeState extends State<Home> {
       // Define the start and end dates for the data you want to fetch
       final now = DateTime.now();
       final midnight = DateTime(now.year, now.month, now.day);
+      double _getdistance = 0.0;
+      double _getcalorie = 0.0;
 
       try {
         bool requested = await health.requestAuthorization(types);
-         List<HealthDataPoint> calories = await health.getHealthDataFromTypes(
+        List<HealthDataPoint> calories = await health.getHealthDataFromTypes(
           midnight,
           now,
           [
             HealthDataType.ACTIVE_ENERGY_BURNED,
           ],
         );
-         calories.forEach((dataPoint) {
+        calories.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
-            totalActiveEnergyBurned += double.parse(dataPoint.value.toString());
+            _getcalorie += double.parse(dataPoint.value.toString());
           }
         });
+        totalActiveEnergyBurned = _getcalorie.ceil();
         List<HealthDataPoint> RandomData = await health.getHealthDataFromTypes(
           midnight,
           now,
@@ -79,14 +82,13 @@ class _HomeState extends State<Home> {
         DistanceData.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
-            distance += double.parse(dataPoint.value.toString());
+            _getdistance += double.parse(dataPoint.value.toString());
           }
         });
-
+        distance = _getdistance.ceil();
         print('Total distance is $distance');
         print('Total calorie $totalActiveEnergyBurned');
-          print('Total steps $Steps');
-
+        print('Total steps $Steps');
       } catch (e) {
         print('Error fetching health data: $e');
       }
@@ -315,7 +317,7 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Text(
-                            "4467 m",
+                            "$distance m",
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                               fontSize: 20,
@@ -329,7 +331,7 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Text(
-                            "457",
+                            "$totalActiveEnergyBurned",
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                               fontSize: 20,
