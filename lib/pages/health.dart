@@ -1,3 +1,5 @@
+import 'dart:ffi';
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'dart:async';
@@ -30,26 +32,52 @@ class _HealthDataPageState extends State<HealthDataPage> {
         HealthDataType.WEIGHT,
         HealthDataType.ACTIVE_ENERGY_BURNED,
         HealthDataType.HEIGHT,
-  HealthDataType.DISTANCE_DELTA,
+        HealthDataType.DISTANCE_DELTA,
+        HealthDataType.WORKOUT
       ];
 
       // Define the start and end dates for the data you want to fetch
       final now = DateTime.now();
+
+      final yesterday = now.subtract(Duration(hours: 1300));
+
       final midnight = DateTime(now.year, now.month, now.day);
- 
+
+      print('timre of midnight is $midnight and day is $now');
+
       try {
         // Fetch health data
-         bool requested = await health.requestAuthorization(types);
-        List<HealthDataPoint> healthData =
-            await health.getHealthDataFromTypes(midnight, now,types);
-
+        bool requested = await health.requestAuthorization(types);
+        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.ACTIVE_ENERGY_BURNED,
+          ],
+        );
+        _healthDataList.clear();
         setState(() {
           _healthDataList = healthData;
         });
 
+        _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+        _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
+        double totalActiveEnergyBurned = 0.0;
+        // print the results
+        _healthDataList.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+       
+            totalActiveEnergyBurned += double.parse(dataPoint.value.toString());
+          }
+        });
+        // for (var dataPoint in healthData) {
+        //   totalActiveEnergyBurned += dataPoint.value!;
+        // }
+
         int? steps = await health.getTotalStepsInInterval(midnight, now);
         print('Total number of steps: $steps');
-        print('health is $healthData');
+        print('health is $totalActiveEnergyBurned');
 
         setState(() {
           _getSteps = steps ?? 0;
