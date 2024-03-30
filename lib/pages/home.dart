@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health/health.dart';
+import 'dart:async';
+import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,8 +11,104 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-    bool isPlaying = false;
+  bool isPlaying = false;
+  int Steps = 0;
+  double distance = 0.0;
+  double totalActiveEnergyBurned = 0.0;
+  double weight = 0.0;
+  HealthFactory health = HealthFactory();
+  final activityRecognition = FlutterActivityRecognition.instance;
   @override
+  void initState() {
+    super.initState();
+    _fetchHealthData();
+  }
+
+  Future<void> _fetchHealthData() async {
+    if (await _isPermissionGranted()) {
+      // Define the types of health data you want to fetch
+      var types = [
+        HealthDataType.STEPS,
+        HealthDataType.WEIGHT,
+        HealthDataType.ACTIVE_ENERGY_BURNED,
+        HealthDataType.HEIGHT,
+        HealthDataType.DISTANCE_DELTA,
+        HealthDataType.WORKOUT,
+        HealthDataType.MOVE_MINUTES,
+        HealthDataType.BODY_MASS_INDEX,
+      ];
+      // Define the start and end dates for the data you want to fetch
+      final now = DateTime.now();
+      final midnight = DateTime(now.year, now.month, now.day);
+
+      try {
+        bool requested = await health.requestAuthorization(types);
+         List<HealthDataPoint> calories = await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.ACTIVE_ENERGY_BURNED,
+          ],
+        );
+         calories.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+            totalActiveEnergyBurned += double.parse(dataPoint.value.toString());
+          }
+        });
+        List<HealthDataPoint> RandomData = await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.BODY_MASS_INDEX,
+          ],
+        );
+        int? _getsteps = await health.getTotalStepsInInterval(midnight, now);
+        setState(() {
+          Steps = _getsteps ?? 0;
+        });
+        List<HealthDataPoint> DistanceData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.DISTANCE_DELTA,
+          ],
+        );
+
+        DistanceData.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+            distance += double.parse(dataPoint.value.toString());
+          }
+        });
+
+        print('Total distance is $distance');
+        print('Total calorie $totalActiveEnergyBurned');
+          print('Total steps $Steps');
+
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
+    } else {
+      print('Permission not granted');
+    }
+  }
+
+  Future<bool> _isPermissionGranted() async {
+    // Check if the user has granted permission
+    PermissionRequestResult reqResult =
+        await activityRecognition.checkPermission();
+
+    if (reqResult == PermissionRequestResult.GRANTED) {
+      return true;
+    } else {
+      // Request permission if not granted
+      reqResult = await activityRecognition.requestPermission();
+      return reqResult == PermissionRequestResult.GRANTED;
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -21,12 +120,12 @@ class _HomeState extends State<Home> {
             child: FloatingActionButton(
               backgroundColor: Colors.pinkAccent,
               onPressed: () {
-                  setState(() {
+                setState(() {
                   isPlaying = !isPlaying;
                 });
                 // Add onPressed action for the play button
               },
-                 child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+              child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
             ),
           ),
         ],
@@ -36,15 +135,12 @@ class _HomeState extends State<Home> {
 
   Widget _buildUI() {
     return SizedBox(
-      
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
-        
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.05,
               ),
@@ -65,7 +161,6 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.sizeOf(context).height * 0.02,
               ),
               _streakdata(),
-              
             ]));
   }
 
@@ -134,7 +229,7 @@ class _HomeState extends State<Home> {
           Row(
             children: [
               Text(
-                "9,257",
+                "$Steps",
                 style: const TextStyle(
                   fontSize: 55,
                   fontWeight: FontWeight.w500,
@@ -268,7 +363,8 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-Widget _graphdata() {
+
+  Widget _graphdata() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -283,9 +379,7 @@ Widget _graphdata() {
               CrossAxisAlignment.start, // Align children vertically centered
           children: [
             Column(
-              
               children: [
-        
                 Text(
                   "Week's Activity",
                   textAlign: TextAlign.end,
@@ -299,7 +393,7 @@ Widget _graphdata() {
               ],
             ),
             Column(
-                  mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: Icon(
@@ -321,7 +415,6 @@ Widget _graphdata() {
     );
   }
 
-
   Widget _streakdata() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
@@ -330,39 +423,33 @@ Widget _graphdata() {
         width: MediaQuery.sizeOf(context).width *
             0.90, // Adjust the width as needed
         height: MediaQuery.sizeOf(context).height * 0.19,
-          padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 
-                children: [
-                
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Text(
                   "Yesterday's Calories",
                   style: const TextStyle(
-                  
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 2.0),
                 ),
-              
-                   
-                   Text(
-                    "400",
-                    style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2.0),
-                  ),
-                
-                ],
+                Text(
+                  "400",
+                  style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2.0),
+                ),
+              ],
             ),
-           Container(
-            child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Streak",
@@ -383,9 +470,7 @@ Widget _graphdata() {
                   ),
                 ],
               ),
-           )
-          
-           
+            )
           ],
         ),
       ),
