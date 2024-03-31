@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitbit/pages/home.dart';
 import 'package:fitbit/pages/health.dart';
+import 'package:fitbit/pages/chart.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -44,7 +45,7 @@ class Login extends StatelessWidget {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) =>Chart()),
       );
 
       // Sign in with the provided credential

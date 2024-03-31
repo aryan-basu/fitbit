@@ -63,9 +63,10 @@ class _HomeState extends State<Home> {
           midnight,
           now,
           [
-            HealthDataType.BODY_MASS_INDEX,
+            HealthDataType.HEART_RATE,
           ],
         );
+        print("data is$RandomData");
         int? _getsteps = await health.getTotalStepsInInterval(midnight, now);
         setState(() {
           Steps = _getsteps ?? 0;
