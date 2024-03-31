@@ -55,14 +55,7 @@ class _HealthDataPageState extends State<HealthDataPage> {
     
       try {
         bool requested = await health.requestAuthorization(types);
-         List<HealthDataPoint> RandomData =
-            await health.getHealthDataFromTypes(
-          midnight,
-          now,
-          [
-              HealthDataType.BODY_MASS_INDEX,
-          ],
-        );
+        
         List<HealthDataPoint> DistanceData =
             await health.getHealthDataFromTypes(
           midnight,
@@ -80,7 +73,7 @@ class _HealthDataPageState extends State<HealthDataPage> {
         });
 
         print('Total distance is $distance');
-           print('Total workout $RandomData');
+         
       } catch (e) {
         print('Error fetching health data: $e');
       }

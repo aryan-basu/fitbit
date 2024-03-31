@@ -64,6 +64,31 @@ class _HomeState extends State<Home> {
       double _getcalorie = 0.0;
       double _getyesterdaycalorie = 0.0;
 
+
+         try {
+        bool requested = await health.requestAuthorization(types);
+
+        List<HealthDataPoint> DistanceData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [
+            HealthDataType.DISTANCE_DELTA,
+          ],
+        );
+
+        DistanceData.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+             _getdistance += double.parse(dataPoint.value.toString());
+          }
+        });
+      distance = _getdistance.ceil();
+        print('Total distance is $distance');
+        // print('Total distance is $distance');
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
       try {
         bool requested = await health.requestAuthorization(types);
         List<HealthDataPoint> calories = await health.getHealthDataFromTypes(
@@ -115,15 +140,15 @@ class _HomeState extends State<Home> {
             HealthDataType.DISTANCE_DELTA,
           ],
         );
-
+        print("distance is $DistanceData");
         DistanceData.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
             _getdistance += double.parse(dataPoint.value.toString());
           }
         });
-        distance = _getdistance.ceil();
-        print('Total distance is $distance');
+        // distance = _getdistance.ceil();
+        // print('Total distance is $distance');
         print('Total calorie $totalActiveEnergyBurned');
         print('Total steps $Steps');
       } catch (e) {

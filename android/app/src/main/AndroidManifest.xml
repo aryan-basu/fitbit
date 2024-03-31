@@ -42,6 +42,7 @@
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
+<uses-permission android:name="androidx.health.permission.Distance.READ" />
 <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
 <uses-permission android:name="android.permission.health.READ_EXERCISE"/>
 <uses-permission android:name="android.permission.health.READ_BODY_WATER_MASS"/>
