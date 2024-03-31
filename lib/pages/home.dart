@@ -5,7 +5,6 @@ import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
-
 // Define data structure for a bar group
 class DataItem {
   final String dayOfWeek;
@@ -13,6 +12,7 @@ class DataItem {
 
   DataItem({required this.dayOfWeek, required this.steps});
 }
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -26,7 +26,8 @@ class _HomeState extends State<Home> {
   int distance = 0;
   int totalActiveEnergyBurned = 0;
   int weight = 0;
-    final List<DataItem> _myData = [
+  int yesterdaycalorie = 0;
+  final List<DataItem> _myData = [
     DataItem(dayOfWeek: 'Mon', steps: 5000),
     DataItem(dayOfWeek: 'Tue', steps: 6000),
     DataItem(dayOfWeek: 'Wed', steps: 7000),
@@ -61,16 +62,31 @@ class _HomeState extends State<Home> {
       final midnight = DateTime(now.year, now.month, now.day);
       double _getdistance = 0.0;
       double _getcalorie = 0.0;
+      double _getyesterdaycalorie = 0.0;
 
       try {
         bool requested = await health.requestAuthorization(types);
         List<HealthDataPoint> calories = await health.getHealthDataFromTypes(
+          midnight.subtract(Duration(days: 1)),
+          midnight,
+          [
+            HealthDataType.ACTIVE_ENERGY_BURNED,
+          ],
+        );
+        List<HealthDataPoint> yescalories = await health.getHealthDataFromTypes(
           midnight,
           now,
           [
             HealthDataType.ACTIVE_ENERGY_BURNED,
           ],
         );
+        yescalories.forEach((dataPoint) {
+          // Check if the value is not null before adding
+          if (dataPoint.value != null) {
+            _getyesterdaycalorie += double.parse(dataPoint.value.toString());
+          }
+        });
+
         calories.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
@@ -78,6 +94,7 @@ class _HomeState extends State<Home> {
           }
         });
         totalActiveEnergyBurned = _getcalorie.ceil();
+        yesterdaycalorie = _getyesterdaycalorie.ceil();
         List<HealthDataPoint> RandomData = await health.getHealthDataFromTypes(
           midnight,
           now,
@@ -132,8 +149,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
- 
-    
     return Scaffold(
       body: Stack(
         children: [
@@ -388,8 +403,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-Widget _graphdata() {
-     // Calculate the maximum steps
+  Widget _graphdata() {
+    // Calculate the maximum steps
     double maxSteps = _myData.map((item) => item.steps).reduce(max);
     // Add an additional 3k to the maximum steps
     maxSteps += 3000;
@@ -439,6 +454,7 @@ Widget _graphdata() {
       );
       return data;
     }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -490,11 +506,10 @@ Widget _graphdata() {
             ),
             SizedBox(height: 0.1), // Add space between the two rows
             Row(
-              
               children: [
                 Expanded(
                   child: Container(
-                   color: Colors.white,
+                    color: Colors.white,
                     child: SizedBox(
                       height: 140, // Set a specific height for the chart
                       child: BarChart(
@@ -590,7 +605,7 @@ Widget _graphdata() {
                       letterSpacing: 2.0),
                 ),
                 Text(
-                  "400",
+                  "$yesterdaycalorie",
                   style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
