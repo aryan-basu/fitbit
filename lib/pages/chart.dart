@@ -80,7 +80,7 @@ class Chart extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding:
-            const EdgeInsets.all(10), // Reduced padding for a smaller graph
+            const EdgeInsets.all(5), // Reduced padding for a smaller graph
         child: Container(
           color: Colors.white,
           child: SizedBox(

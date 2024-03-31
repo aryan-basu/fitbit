@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'dart:async';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
 
+
+// Define data structure for a bar group
+class DataItem {
+  final String dayOfWeek;
+  final double steps;
+
+  DataItem({required this.dayOfWeek, required this.steps});
+}
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -16,6 +26,15 @@ class _HomeState extends State<Home> {
   int distance = 0;
   int totalActiveEnergyBurned = 0;
   int weight = 0;
+    final List<DataItem> _myData = [
+    DataItem(dayOfWeek: 'Mon', steps: 5000),
+    DataItem(dayOfWeek: 'Tue', steps: 6000),
+    DataItem(dayOfWeek: 'Wed', steps: 7000),
+    DataItem(dayOfWeek: 'Thu', steps: 8000),
+    DataItem(dayOfWeek: 'Fri', steps: 9000),
+    DataItem(dayOfWeek: 'Sat', steps: 10000),
+    DataItem(dayOfWeek: 'Sun', steps: 11000),
+  ];
   HealthFactory health = HealthFactory();
   final activityRecognition = FlutterActivityRecognition.instance;
   @override
@@ -113,6 +132,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
+ 
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -145,7 +166,7 @@ class _HomeState extends State<Home> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.05,
+                height: MediaQuery.sizeOf(context).height * 0.04,
               ),
               _ProfileHeader(),
               SizedBox(
@@ -367,51 +388,178 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _graphdata() {
+Widget _graphdata() {
+     // Calculate the maximum steps
+    double maxSteps = _myData.map((item) => item.steps).reduce(max);
+    // Add an additional 3k to the maximum steps
+    maxSteps += 3000;
+
+    // Define a function to generate bar data
+    List<BarChartGroupData> generateBarData() {
+      List<BarChartGroupData> data = [];
+      // Add invisible bar for whitespace at the beginning
+      data.add(
+        BarChartGroupData(
+          x: -1,
+          barRods: [
+            BarChartRodData(
+              y: 0,
+              width: 15,
+              colors: [Colors.transparent],
+            ),
+          ],
+        ),
+      );
+      for (var i = 0; i < _myData.length; i++) {
+        data.add(
+          BarChartGroupData(
+            x: i, // Use the index as x-value
+            barRods: [
+              BarChartRodData(
+                y: _myData[i].steps, // Steps for the day
+                width: 15,
+                colors: [Colors.pinkAccent],
+              ),
+            ],
+          ),
+        );
+      }
+      // Add extra white space to the right of the last bar
+      data.add(
+        BarChartGroupData(
+          x: _myData.length + 1,
+          barRods: [
+            BarChartRodData(
+              y: 0, // Invisible bar
+              width: 15,
+              colors: [Colors.transparent], // Transparent color
+            ),
+          ],
+        ),
+      );
+      return data;
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
         color: Colors.white,
         width: MediaQuery.sizeOf(context).width *
             0.90, // Adjust the width as needed
-        height: MediaQuery.sizeOf(context).height * 0.22,
-        padding: EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align children vertically centered
+        height: MediaQuery.sizeOf(context).height * 0.27,
+        padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Week's Activity",
-                  textAlign: TextAlign.end,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Week's Activity",
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.bar_chart_outlined,
+                        size: 38, // Adjust the size of the icon
+                        color: Colors.pinkAccent, // Set the color of the icon
+                        semanticLabel:
+                            'Account', // Add a semantic label for accessibility
+                      ),
+                      onPressed: () {
+                        // Handle icon tap
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
+            SizedBox(height: 0.1), // Add space between the two rows
+            Row(
+              
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.bar_chart_outlined,
-                    size: 38, // Adjust the size of the icon
-                    color: Colors.pinkAccent, // Set the color of the icon
-                    semanticLabel:
-                        'Account', // Add a semantic label for accessibility
-                  ), // Add the icon here
-                  onPressed: () {
-                    // Handle icon tap
-                  },
+                Expanded(
+                  child: Container(
+                   color: Colors.white,
+                    child: SizedBox(
+                      height: 140, // Set a specific height for the chart
+                      child: BarChart(
+                        BarChartData(
+                          borderData: FlBorderData(
+                            border: const Border(
+                              top: BorderSide.none,
+                              right: BorderSide.none,
+                              left: BorderSide(width: 1),
+                              bottom: BorderSide(width: 1),
+                            ),
+                          ),
+                          maxY: maxSteps, // Set the maximum value for y-axis
+                          groupsSpace: 10,
+                          barGroups: generateBarData(),
+                          titlesData: FlTitlesData(
+                            bottomTitles: SideTitles(
+                              showTitles: true,
+                              getTextStyles: (value) => const TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    12, // Reduced font size for day labels
+                              ),
+                              margin: 10,
+                              getTitles: (double value) {
+                                final weekdays = [
+                                  'Mon',
+                                  'Tue',
+                                  'Wed',
+                                  'Thu',
+                                  'Fri',
+                                  'Sat',
+                                  'Sun'
+                                ];
+                                if (value >= 0 && value < _myData.length) {
+                                  return weekdays[value.toInt()];
+                                } else {
+                                  return ''; // No label for the extra white space
+                                }
+                              },
+                            ),
+                            leftTitles: SideTitles(
+                              showTitles: true,
+                              getTextStyles: (value) => const TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    12, // Reduced font size for step labels
+                              ),
+                              margin: 10,
+                              interval: 3000, // Set interval to 3000 (3k)
+                              reservedSize:
+                                  40, // Adjust reserved size to fit labels
+                              getTitles: (double value) {
+                                return '${(value ~/ 1000).toInt()}k'; // Divide by 1000 to convert to k
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                // Add more widgets if needed
               ],
-            )
+            ),
           ],
         ),
       ),
