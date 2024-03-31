@@ -38,6 +38,7 @@ class _HealthDataPageState extends State<HealthDataPage> {
         HealthDataType.HEIGHT,
         HealthDataType.DISTANCE_DELTA,
         HealthDataType.WORKOUT,
+        HealthDataType.HEART_RATE,
          HealthDataType.MOVE_MINUTES,
           HealthDataType.BODY_MASS_INDEX,
       ];
@@ -50,8 +51,30 @@ class _HealthDataPageState extends State<HealthDataPage> {
       final midnight = DateTime(now.year, now.month, now.day);
 
       print('time of midnight is $midnight and day is $now');
+try {
+        // Request authorization for health data types
+        bool requested = await health.requestAuthorization(types);
 
+        // Fetch MOVE_MINUTES data
+        List<HealthDataPoint> moveMinutesData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [HealthDataType.MOVE_MINUTES],
+        );
 
+        // Calculate total move minutes
+        int totalMoveMinutes = 0;
+        moveMinutesData.forEach((dataPoint) {
+          if (dataPoint.value != null) {
+            totalMoveMinutes += int.parse(dataPoint.value.toString());
+          }
+        });
+
+        print('Total move minutes: $totalMoveMinutes');
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
     
       try {
         bool requested = await health.requestAuthorization(types);

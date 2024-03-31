@@ -120,14 +120,7 @@ class _HomeState extends State<Home> {
         });
         totalActiveEnergyBurned = _getcalorie.ceil();
         yesterdaycalorie = _getyesterdaycalorie.ceil();
-        List<HealthDataPoint> RandomData = await health.getHealthDataFromTypes(
-          midnight,
-          now,
-          [
-            HealthDataType.HEART_RATE,
-          ],
-        );
-        print("data is$RandomData");
+   
         int? _getsteps = await health.getTotalStepsInInterval(midnight, now);
         setState(() {
           Steps = _getsteps ?? 0;
