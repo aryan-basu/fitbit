@@ -5,12 +5,20 @@ import 'package:health/health.dart';
 import 'dart:async';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 
+class DataItem {
+  final String dayOfWeek;
+  final double steps;
+
+  DataItem({required this.dayOfWeek, required this.steps});
+}
+
 class HealthDataPage extends StatefulWidget {
   @override
   _HealthDataPageState createState() => _HealthDataPageState();
 }
 
 class _HealthDataPageState extends State<HealthDataPage> {
+    List<DataItem> weeklyData = []; 
   List<HealthDataPoint> _healthDataList = [];
   List<HealthDataPoint> _DistanceDataList = [];
   int _getSteps = 0;
@@ -71,29 +79,33 @@ class _HealthDataPageState extends State<HealthDataPage> {
 
       print('time of midnight is $midnight and day is $now');
 
-           try {
+    
+      try {
         // Request authorization for health data types
         bool requested = await health.requestAuthorization(types);
 
         // Fetch steps data for the entire week
-        Map<String, int> weeklySteps = {};
-
-        // Iterate over each day of the week
+        weeklyData.clear(); // Clear previous data
         for (int i = 0; i < 7; i++) {
           DateTime date = midnight.subtract(Duration(days: i));
           int? steps = await health.getTotalStepsInInterval(
               DateTime(date.year, date.month, date.day),
               DateTime(date.year, date.month, date.day, 23, 59, 59));
 
-          // Store steps data for the day in the map
-          weeklySteps[_getDayOfWeek(date)] = steps ?? 0;
+          // Store steps data for the day in the list
+          weeklyData.add(DataItem(
+            dayOfWeek: _getDayOfWeek(date),
+            steps: steps?.toDouble() ?? 0.0,
+          ));
         }
 
-        // Print the weekly steps data
-        print('Weekly Steps: $weeklySteps');
-        setState(() {
-          _getSteps = weeklySteps[now.weekday.toString()] ?? 0;
+        // Print the weekly data
+        weeklyData.forEach((item) {
+          print('Day: ${item.dayOfWeek}, Steps: ${item.steps}');
         });
+
+        // Update the UI
+        setState(() {});
       } catch (e) {
         print('Error fetching health data: $e');
       }
