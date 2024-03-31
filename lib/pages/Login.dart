@@ -45,7 +45,7 @@ class Login extends StatelessWidget {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>Home()),
+        MaterialPageRoute(builder: (context) =>HealthDataPage()),
       );
 
       // Sign in with the provided credential

@@ -26,7 +26,26 @@ class _HealthDataPageState extends State<HealthDataPage> {
     super.initState();
     _fetchHealthData();
   }
-
+  String _getDayOfWeek(DateTime date) {
+    switch (date.weekday) {
+      case DateTime.monday:
+        return 'Monday';
+      case DateTime.tuesday:
+        return 'Tuesday';
+      case DateTime.wednesday:
+        return 'Wednesday';
+      case DateTime.thursday:
+        return 'Thursday';
+      case DateTime.friday:
+        return 'Friday';
+      case DateTime.saturday:
+        return 'Saturday';
+      case DateTime.sunday:
+        return 'Sunday';
+      default:
+        return '';
+    }
+  }
   Future<void> _fetchHealthData() async {
     // Check if permission is granted
     if (await _isPermissionGranted()) {
@@ -51,7 +70,34 @@ class _HealthDataPageState extends State<HealthDataPage> {
       final midnight = DateTime(now.year, now.month, now.day);
 
       print('time of midnight is $midnight and day is $now');
-try {
+
+           try {
+        // Request authorization for health data types
+        bool requested = await health.requestAuthorization(types);
+
+        // Fetch steps data for the entire week
+        Map<String, int> weeklySteps = {};
+
+        // Iterate over each day of the week
+        for (int i = 0; i < 7; i++) {
+          DateTime date = midnight.subtract(Duration(days: i));
+          int? steps = await health.getTotalStepsInInterval(
+              DateTime(date.year, date.month, date.day),
+              DateTime(date.year, date.month, date.day, 23, 59, 59));
+
+          // Store steps data for the day in the map
+          weeklySteps[_getDayOfWeek(date)] = steps ?? 0;
+        }
+
+        // Print the weekly steps data
+        print('Weekly Steps: $weeklySteps');
+        setState(() {
+          _getSteps = weeklySteps[now.weekday.toString()] ?? 0;
+        });
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
+    try {
         // Request authorization for health data types
         bool requested = await health.requestAuthorization(types);
 
