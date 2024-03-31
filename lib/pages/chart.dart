@@ -31,6 +31,52 @@ class Chart extends StatelessWidget {
     // Add an additional 3k to the maximum steps
     maxSteps += 3000;
 
+    // Define a function to generate bar data
+    List<BarChartGroupData> generateBarData() {
+      List<BarChartGroupData> data = [];
+      // Add invisible bar for whitespace at the beginning
+      data.add(
+        BarChartGroupData(
+          x: -1,
+          barRods: [
+            BarChartRodData(
+              y: 0,
+              width: 15,
+              colors: [Colors.transparent],
+            ),
+          ],
+        ),
+      );
+      for (var i = 0; i < _myData.length; i++) {
+        data.add(
+          BarChartGroupData(
+            x: i, // Use the index as x-value
+            barRods: [
+              BarChartRodData(
+                y: _myData[i].steps, // Steps for the day
+                width: 15,
+                colors: [Colors.pinkAccent],
+              ),
+            ],
+          ),
+        );
+      }
+      // Add extra white space to the right of the last bar
+      data.add(
+        BarChartGroupData(
+          x: _myData.length + 1,
+          barRods: [
+            BarChartRodData(
+              y: 0, // Invisible bar
+              width: 15,
+              colors: [Colors.transparent], // Transparent color
+            ),
+          ],
+        ),
+      );
+      return data;
+    }
+
     return Scaffold(
       body: Padding(
         padding:
@@ -38,7 +84,7 @@ class Chart extends StatelessWidget {
         child: Container(
           color: Colors.white,
           child: SizedBox(
-            height: 250, // Set a specific height for the chart
+            height: 200, // Set a specific height for the chart
             child: BarChart(
               BarChartData(
                 borderData: FlBorderData(
@@ -51,22 +97,7 @@ class Chart extends StatelessWidget {
                 ),
                 maxY: maxSteps, // Set the maximum value for y-axis
                 groupsSpace: 10,
-                barGroups: _myData
-                    .asMap()
-                    .entries
-                    .map(
-                      (entry) => BarChartGroupData(
-                        x: entry.key, // Use the index as x-value
-                        barRods: [
-                          BarChartRodData(
-                            y: entry.value.steps, // Steps for the day
-                            width: 15,
-                            colors: [Colors.amber],
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
+                barGroups: generateBarData(),
                 titlesData: FlTitlesData(
                   bottomTitles: SideTitles(
                     showTitles: true,
@@ -85,7 +116,11 @@ class Chart extends StatelessWidget {
                         'Sat',
                         'Sun'
                       ];
-                      return weekdays[value.toInt()];
+                      if (value >= 0 && value < _myData.length) {
+                        return weekdays[value.toInt()];
+                      } else {
+                        return ''; // No label for the extra white space
+                      }
                     },
                   ),
                   leftTitles: SideTitles(
