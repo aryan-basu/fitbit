@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   int totalActiveEnergyBurned = 0;
   int weight = 0;
   int yesterdaycalorie = 0;
+ int moveminutes=0;
   final List<DataItem> _myData = [
     DataItem(dayOfWeek: 'Mon', steps: 5000),
     DataItem(dayOfWeek: 'Tue', steps: 6000),
@@ -63,8 +64,32 @@ class _HomeState extends State<Home> {
       double _getdistance = 0.0;
       double _getcalorie = 0.0;
       double _getyesterdaycalorie = 0.0;
+    
 
+try {
+        // Request authorization for health data types
+        bool requested = await health.requestAuthorization(types);
 
+        // Fetch MOVE_MINUTES data
+        List<HealthDataPoint> moveMinutesData =
+            await health.getHealthDataFromTypes(
+          midnight,
+          now,
+          [HealthDataType.MOVE_MINUTES],
+        );
+
+        // Calculate total move minutes
+        // int totalMoveMinutes = 0;
+        moveMinutesData.forEach((dataPoint) {
+          if (dataPoint.value != null) {
+            moveminutes += int.parse(dataPoint.value.toString());
+          }
+        });
+
+        print('Total move minutes: $moveminutes');
+      } catch (e) {
+        print('Error fetching health data: $e');
+      }
          try {
         bool requested = await health.requestAuthorization(types);
 
@@ -315,7 +340,7 @@ class _HomeState extends State<Home> {
             Row(
               children: [
                 Text(
-                  "You walked 72 min",
+                  "You walked $moveminutes min",
                   style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w400,
