@@ -84,7 +84,7 @@ class Chart extends StatelessWidget {
         child: Container(
           color: Colors.white,
           child: SizedBox(
-            height: 200, // Set a specific height for the chart
+            height: 150, // Set a specific height for the chart
             child: BarChart(
               BarChartData(
                 borderData: FlBorderData(
