@@ -215,7 +215,7 @@ try {
             HealthDataType.DISTANCE_DELTA,
           ],
         );
-        print("distance is $DistanceData");
+        // print("distance is $DistanceData");
         DistanceData.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {

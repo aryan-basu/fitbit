@@ -3,29 +3,82 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitbit/pages/home.dart';
-import 'package:fitbit/pages/health.dart';
-import 'package:fitbit/pages/chart.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  const Login({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign in with Google'),
-      ),
       body: Center(
-        child: ElevatedButton.icon(
-          onPressed: () {
-            signInWithGoogle(context);
-          },
-          icon: Icon(Icons.g_translate), // Google logo icon
-          label: Text('Sign in with Google'),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white, // Button background color
-            onPrimary: Colors.black, // Button text color
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/biceps.png',
+                    width: 200,
+                    height: 200,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Step into a healthier you with ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Fitbit',
+                    style: TextStyle(
+                      color: Colors.pinkAccent,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                signInWithGoogle(context);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                onPrimary: Colors.black,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/google-logo.png', // Replace with your Google logo image path
+                    height: 24,
+                    width: 24,
+                  ),
+                  SizedBox(width: 10),
+                  Text('Sign in with Google',
+                    style: TextStyle(
+                    
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -45,7 +98,7 @@ class Login extends StatelessWidget {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>Home()),
+        MaterialPageRoute(builder: (context) => Home()),
       );
 
       // Sign in with the provided credential
