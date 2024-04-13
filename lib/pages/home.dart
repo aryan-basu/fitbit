@@ -21,22 +21,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-      List<DataItem> weeklyData = [
-            DataItem(dayOfWeek: 'Mon', steps: 5000),
+  List<DataItem> weeklyData = [
+    DataItem(dayOfWeek: 'Mon', steps: 5000),
     DataItem(dayOfWeek: 'Tue', steps: 6000),
     DataItem(dayOfWeek: 'Wed', steps: 7000),
     DataItem(dayOfWeek: 'Thu', steps: 8000),
     DataItem(dayOfWeek: 'Fri', steps: 9000),
     DataItem(dayOfWeek: 'Sat', steps: 10000),
     DataItem(dayOfWeek: 'Sun', steps: 11000),
-      ]; 
+  ];
   bool isPlaying = false;
+  bool isLoading = false;
   int Steps = 0;
   int distance = 0;
   int totalActiveEnergyBurned = 0;
   int weight = 0;
   int yesterdaycalorie = 0;
- int moveminutes=0;
+  int moveminutes = 0;
   final List<DataItem> _myData = [
     DataItem(dayOfWeek: 'Mon', steps: 5000),
     DataItem(dayOfWeek: 'Tue', steps: 6000),
@@ -53,6 +54,7 @@ class _HomeState extends State<Home> {
     super.initState();
     _fetchHealthData();
   }
+
   String _getDayOfWeek(DateTime date) {
     switch (date.weekday) {
       case DateTime.monday:
@@ -73,6 +75,7 @@ class _HomeState extends State<Home> {
         return '';
     }
   }
+
   Future<void> _fetchHealthData() async {
     if (await _isPermissionGranted()) {
       // Define the types of health data you want to fetch
@@ -92,7 +95,7 @@ class _HomeState extends State<Home> {
       double _getdistance = 0.0;
       double _getcalorie = 0.0;
       double _getyesterdaycalorie = 0.0;
-        
+
       try {
         // Request authorization for health data types
         bool requested = await health.requestAuthorization(types);
@@ -119,11 +122,17 @@ class _HomeState extends State<Home> {
 
         // Update the UI
         setState(() {});
+          setState(() {
+          isLoading = true;
+        });
       } catch (e) {
         print('Error fetching health data: $e');
+          setState(() {
+          isLoading = false;
+        });
       }
 
-try {
+      try {
         // Request authorization for health data types
         bool requested = await health.requestAuthorization(types);
 
@@ -147,7 +156,7 @@ try {
       } catch (e) {
         print('Error fetching health data: $e');
       }
-         try {
+      try {
         bool requested = await health.requestAuthorization(types);
 
         List<HealthDataPoint> DistanceData =
@@ -162,10 +171,10 @@ try {
         DistanceData.forEach((dataPoint) {
           // Check if the value is not null before adding
           if (dataPoint.value != null) {
-             _getdistance += double.parse(dataPoint.value.toString());
+            _getdistance += double.parse(dataPoint.value.toString());
           }
         });
-      distance = _getdistance.ceil();
+        distance = _getdistance.ceil();
         print('Total distance is $distance');
         // print('Total distance is $distance');
       } catch (e) {
@@ -202,7 +211,7 @@ try {
         });
         totalActiveEnergyBurned = _getcalorie.ceil();
         yesterdaycalorie = _getyesterdaycalorie.ceil();
-   
+
         int? _getsteps = await health.getTotalStepsInInterval(midnight, now);
         setState(() {
           Steps = _getsteps ?? 0;
@@ -249,27 +258,36 @@ try {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildUI(),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-              backgroundColor: Colors.pinkAccent,
-              onPressed: () {
-                setState(() {
-                  isPlaying = !isPlaying;
-                });
-                // Add onPressed action for the play button
-              },
-              child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+    if (isLoading==false) {
+      // Show loader if isLoading is true
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Stack(
+          children: [
+            _buildUI(),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: FloatingActionButton(
+                backgroundColor: Colors.pinkAccent,
+                onPressed: () {
+                  setState(() {
+                    isPlaying = !isPlaying;
+                  });
+                  // Add onPressed action for the play button
+                },
+                child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildUI() {
